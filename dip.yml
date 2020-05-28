@@ -1,0 +1,51 @@
+version: '4.1'
+
+environment:
+  FOO: bar
+
+compose:
+  files:
+    - .dockerdev/docker-compose.yml
+  # specify project name explicitly to avoid name collisions:
+  # docker-compose use the compose file's folder name as the project name by default,
+  # which could be the same for different projects (e.g., if you store docker-compose.yml
+  # in the .dockerdev/ folder)
+  project_name: cheap_machines
+
+interaction:
+  sh:
+    description: Open a Bash shell within the dev container (with dependencies up)
+    service: runner
+    command: /bin/bash
+
+  bash:
+    description: Run an arbitrary script within the dev container (or open a shell without deps)
+    service: runner
+    command: /bin/bash
+    compose_run_options: [no-deps]
+
+  bundle:
+    description: Run Bundler commands
+    service: runner
+    command: bundle
+    compose_run_options: [no-deps]
+
+  rake:
+    description: Run Rake commands
+    service: runner
+    command: bundle exec rake
+
+  binconsole:
+    description: Run bin/console
+    service: runner
+    command: bundle exec bin/console
+
+  rubocop:
+    description: Run Rubocop
+    service: runner
+    command: bundle exec rubocop
+    compose_run_options: [no-deps]
+
+provision:
+  - dip compose down --volumes
+  - dip bash bin/setup

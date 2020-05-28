@@ -1,0 +1,36 @@
+version: '2.4'
+
+x-app: &app
+  build:
+    context: .
+    # dockerfile: ./.dockerdev/Dockerfile
+    dockerfile: ./Dockerfile
+    args:
+      RUBY_VERSION: '2.7.1'
+      BUNDLER_VERSION: '2.1.4'
+  environment: &env
+    FOO: bar
+  image: cheap_machines-dev:1.0.0
+  tmpfs:
+    - /tmp
+
+x-backend: &backend
+  <<: *app
+  stdin_open: true
+  tty: true
+  volumes:
+    - ..:/app:cached
+    - bundle:/usr/local/bundle
+    - .bashrc:/root/.bashrc:ro
+  environment:
+    <<: *env
+    HISTFILE: /app/log/.bash_history
+    EDITOR: vi
+
+services:
+  runner:
+    <<: *backend
+    command: /bin/bash
+
+volumes:
+  bundle:
