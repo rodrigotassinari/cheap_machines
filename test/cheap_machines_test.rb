@@ -1,11 +1,8 @@
 require "test_helper"
 
-class CheapMachinesTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::CheapMachines::VERSION
-  end
-
-  def test_it_does_something_useful
-    assert false
+describe CheapMachines do
+  it "has a version number" do
+    _(::CheapMachines::VERSION).wont_be_nil
+    _(::CheapMachines::VERSION).must_match(/[0-9]\.[0-9]\.[0-9]/)
   end
 end

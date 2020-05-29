@@ -1,4 +1,6 @@
-require "cheap_machines/version"
+require "zeitwerk"
+loader = Zeitwerk::Loader.for_gem
+loader.setup
 
 module CheapMachines
   class Error < StandardError; end

@@ -27,9 +27,19 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
   
+  spec.add_runtime_dependency "zeitwerk", "~> 2.3"
   spec.add_runtime_dependency "aws-sdk-ec2", "~> 1.163"
   spec.add_runtime_dependency "dry-transaction", "~> 0.13"
   
   spec.add_development_dependency "rake", "~> 12.3"
   spec.add_development_dependency "minitest", "~> 5.14"
+  spec.add_development_dependency "vcr", "~> 5.1"
+  spec.add_development_dependency "minitest-vcr", "~> 1.4"
+  spec.add_development_dependency "webmock", "~> 3.8"
+  spec.add_development_dependency "mocha", "~> 1.11"
+  spec.add_development_dependency "guard", "~> 2.16"
+  spec.add_development_dependency "guard-minitest", "~> 2.4"
+  spec.add_development_dependency "minitest-reporters", "~> 1.4"
+  spec.add_development_dependency "simplecov", "~> 0.18"
+  spec.add_development_dependency "timecop", "~> 0.9"
 end
