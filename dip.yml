@@ -35,7 +35,12 @@ interaction:
     service: runner
     command: bundle exec rake
 
-  binconsole:
+  guard:
+    description: Run Guard
+    service: runner
+    command: bundle exec guard
+
+    binconsole:
     description: Run bin/console
     service: runner
     command: bundle exec bin/console
