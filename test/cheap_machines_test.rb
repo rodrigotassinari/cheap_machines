@@ -1,4 +1,4 @@
-require "spec_helper"
+require "test_helper"
 
 describe CheapMachines do
   it "has a version number" do

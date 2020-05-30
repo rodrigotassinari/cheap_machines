@@ -1,7 +1,7 @@
 if ENV["COVERAGE"]
   require "simplecov"
   SimpleCov.start do
-    add_filter "/spec/"
+    add_filter "/test/"
   end
 end
 
@@ -22,7 +22,7 @@ Timecop.safe_mode = true
 
 VCR.configure do |config|
   config.default_cassette_options = {record: :once, record_on_error: false}
-  config.cassette_library_dir = "spec/cassettes"
+  config.cassette_library_dir = "test/cassettes"
   config.hook_into :webmock
 end
 MinitestVcr::Spec.configure!
