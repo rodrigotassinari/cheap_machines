@@ -1,7 +1,7 @@
 version: '4.1'
 
-environment:
-  FOO: bar
+# environment:
+#   FOO: bar
 
 compose:
   files:
@@ -40,8 +40,13 @@ interaction:
     service: runner
     command: bundle exec guard
 
-    binconsole:
-    description: Run bin/console
+  tests:
+    description: Run all tests
+    service: runner
+    command: bundle exec rake test
+
+  irb:
+    description: Run bin/console (IRB session with gem files loaded)
     service: runner
     command: bundle exec bin/console
 
