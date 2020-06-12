@@ -11,12 +11,13 @@ module CheapMachines
     end
 
     def create_project(project_name:, key_pair_name:, public_ip:)
-      Operations::Projects::Create.new.call(
+      result = Operations::Projects::Create.new.call(
         client: self,
         project_name: project_name,
         key_pair_name: key_pair_name,
         public_ip: public_ip
       )
+      result.success?
     end
 
     def show_project(project_name:)

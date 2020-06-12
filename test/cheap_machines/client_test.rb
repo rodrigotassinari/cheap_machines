@@ -1,7 +1,8 @@
 require "test_helper"
 
 describe CheapMachines::Client do
-  
+  let(:described_class) { CheapMachines::Client }
+
   describe ".new" do
     it "setups configuration with default logging to STDOUT" do
       client = CheapMachines::Client.new(
@@ -29,4 +30,33 @@ describe CheapMachines::Client do
     end
   end
 
+  describe "#create_project" do
+    let(:subject) do
+      described_class.new(
+        access_key_id: 'some-access-key',
+        secret_access_key: 'some-secret-key',
+        region: 'us-west-2'
+      )
+    end
+    it "executes Operations::Projects::Create with supplied arguments" do
+      CheapMachines::Operations::Projects::Create.
+        any_instance.
+        expects(:call).
+        with(
+          client: subject,
+          project_name: 'my-project',
+          key_pair_name: 'some-key-pair',
+          public_ip: '123.123.123.123'
+        ).
+        returns(
+          ::Dry::Monads::Success(true)
+        )
+      result = subject.create_project(
+        project_name: 'my-project',
+        key_pair_name: 'some-key-pair',
+        public_ip: '123.123.123.123'
+      )
+      _(result).must_equal(true)
+    end
+  end
 end
