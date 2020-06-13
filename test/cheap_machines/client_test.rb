@@ -38,10 +38,11 @@ describe CheapMachines::Client do
         region: 'us-west-2'
       )
     end
-    it "executes Operations::Projects::Create with supplied arguments" do
-      CheapMachines::Operations::Projects::Create.
+    it "executes Transactions::Projects::Create with supplied arguments" do
+      CheapMachines::Transactions::Projects::Create.
         any_instance.
         expects(:call).
+        once.
         with(
           client: subject,
           project_name: 'my-project',
@@ -49,13 +50,15 @@ describe CheapMachines::Client do
           public_ip: '123.123.123.123'
         ).
         returns(
-          ::Dry::Monads::Success(true)
+          ::Dry::Monads::Success(some: 'output')
         )
-      result = subject.create_project(
-        project_name: 'my-project',
-        key_pair_name: 'some-key-pair',
-        public_ip: '123.123.123.123'
-      )
+
+        result = subject.create_project(
+          project_name: 'my-project',
+          key_pair_name: 'some-key-pair',
+          public_ip: '123.123.123.123'
+        )
+
       _(result).must_equal(true)
     end
   end
