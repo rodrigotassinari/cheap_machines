@@ -9,6 +9,19 @@ describe CheapMachines::Operations::KeyPair::Check do
     let(:logger) { TestHelpers.logger }
     let(:input) { {ec2_client: ec2_client, logger: logger, key_pair_name: 'name-of-key-pair'} }
 
+    describe "ec2 client error" do
+      before do
+        # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Errors.html
+        ec2_client.stub_responses(:describe_key_pairs, Aws::EC2::Errors::AuthFailure.new({}, 'invalid credentials'))
+      end
+      it "returns a failure with error message" do
+        result = subject.call(input)
+        _(result).must_be_kind_of(::Dry::Monads::Result)
+        _(result.failure?).must_equal(true)
+        _(result.failure).must_equal("error connecting to AWS: #<Aws::EC2::Errors::AuthFailure: invalid credentials>")
+      end
+    end
+
     describe "user has no key pairs" do
       before do
         ec2_client.stub_responses(:describe_key_pairs, {
