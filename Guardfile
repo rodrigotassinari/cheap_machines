@@ -20,6 +20,7 @@ guard :minitest, test_folders: 'test', test_file_patterns: '*_test.rb' do
   watch(%r{^test/(.*)_test\.rb$})
   watch(%r{^lib/(.+)\.rb$})         { |m| "test/#{m[1]}_test.rb" }
   watch(%r{^test/test_helper\.rb$}) { 'test' }
+  watch(%r{^test/support/(.+)\.rb$}) { 'test' }
 
   # with Minitest::Spec
   # watch(%r{^spec/(.*)_spec\.rb$})

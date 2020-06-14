@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest-vcr", "~> 1.4"
   spec.add_development_dependency "webmock", "~> 3.8"
   spec.add_development_dependency "mocha", "~> 1.11"
+  spec.add_development_dependency "spy", "~> 1.0"
   spec.add_development_dependency "guard", "~> 2.16"
   spec.add_development_dependency "guard-minitest", "~> 2.4"
   spec.add_development_dependency "minitest-reporters", "~> 1.4"

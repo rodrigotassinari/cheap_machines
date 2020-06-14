@@ -14,6 +14,7 @@ require "vcr"
 require "minitest-vcr"
 require "webmock"
 require "mocha/minitest"
+require "spy/integration"
 require "minitest/reporters"
 require "timecop"
 
@@ -29,3 +30,5 @@ MinitestVcr::Spec.configure!
 
 # Minitest::Reporters.use! [Minitest::Reporters::MeanTimeReporter.new]
 Minitest::Reporters.use! [Minitest::Reporters::ProgressReporter.new]
+
+require_relative 'support/test_helpers'

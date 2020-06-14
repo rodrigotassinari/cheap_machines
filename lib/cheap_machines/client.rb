@@ -1,19 +1,31 @@
 module CheapMachines
   class Client
 
-    attr_reader :access_key_id, :secret_access_key, :region, :logger
+    attr_reader :logger
 
     def initialize(access_key_id:, secret_access_key:, region:, logger: nil)
+      @logger = logger || default_logger
       @access_key_id = access_key_id
       @secret_access_key = secret_access_key
       @region = region
-      @logger = logger || default_logger
+    end
+
+    def ec2_client
+      @ec2_client ||= ::Aws::EC2::Client.new(
+        region: @region,
+        credentials: ::Aws::Credentials.new(@access_key_id, @secret_access_key),
+        logger: self.logger,
+        # see https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/timeout-duration.html
+        retry_limit: 3,
+        retry_backoff: lambda { |c| sleep(15) }
+      )
     end
 
     def create_project(project_name:, key_pair_name:, public_ip:)
       transaction = Transactions::Projects::Create.new
       input = {
-        client: self,
+        ec2_client: self.ec2_client,
+        logger: self.logger,
         project_name: project_name,
         key_pair_name: key_pair_name,
         public_ip: public_ip
