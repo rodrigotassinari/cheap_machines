@@ -4,7 +4,6 @@ module TestHelpers
     Aws::EC2::Client.new(
       stub_responses: true,
       credentials: ::Aws::Credentials.new('access_key_id', 'secret_access_key'),
-      # credentials: ::Aws::Credentials.new('AKIAJHDRQTHCWDPVDZAQ', 'Jrye4lzgzAsrHEiq606qXPTqv6PypGz0GyCOVu+R'),
       region: region,
     )
   end
