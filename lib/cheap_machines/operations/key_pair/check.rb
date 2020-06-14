@@ -18,6 +18,16 @@ module CheapMachines
           logger = input[:logger]
           key_name = input.delete(:key_pair_name)
 
+          key_pair = find_key_pair(ec2, key_name)
+          return Failure("no key pair found with name: '#{key_name}'") if key_pair.nil?
+          Success(input.merge(key_pair: key_pair))
+        rescue Aws::Errors::ServiceError, Aws::Errors::NoSuchEndpointError => exception
+          Failure("error connecting to AWS: #{exception.inspect}")
+        end
+
+        private
+
+        def find_key_pair(ec2, key_name)
           # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#describe_key_pairs-instance_method
           response = ec2.describe_key_pairs(
             filters: [
@@ -25,13 +35,7 @@ module CheapMachines
             ]
           )
           # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/KeyPairInfo.html
-          key_pair = response.key_pairs.detect { |kpi| kpi[:key_name] == key_name }
-          
-          return Failure("no key pair found with name: '#{key_name}'") if key_pair.nil?
-
-          Success(input.merge(key_pair: key_pair))
-        rescue Aws::Errors::ServiceError, Aws::Errors::NoSuchEndpointError => exception
-          Failure("error connecting to AWS: #{exception.inspect}")
+          response.key_pairs.detect { |kpi| kpi[:key_name] == key_name }
         end
 
       end
