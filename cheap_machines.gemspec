@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "zeitwerk", "~> 2.3"
   spec.add_runtime_dependency "aws-sdk-ec2", "~> 1.163"
   spec.add_runtime_dependency "dry-transaction", "~> 0.13"
+  spec.add_runtime_dependency "dry-validation", "~> 1.5"
   
   spec.add_development_dependency "rake", "~> 12.3"
   spec.add_development_dependency "minitest", "~> 5.14"

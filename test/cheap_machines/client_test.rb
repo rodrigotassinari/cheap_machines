@@ -21,7 +21,7 @@ describe CheapMachines::Client do
     end
     it "allows the usage of a custom logger" do
       class CustomLogger < ::Logger; end
-      custom_logger = CustomLogger.new(STDOUT, level: ::Logger::DEBUG)
+      custom_logger = CustomLogger.new(RUBY_PLATFORM != 'i386-mingw32' ? '/dev/null' : 'NUL', level: ::Logger::DEBUG)
 
       client = CheapMachines::Client.new(
         access_key_id: 'some-access-key',
@@ -40,7 +40,8 @@ describe CheapMachines::Client do
       described_class.new(
         access_key_id: 'some-access-key',
         secret_access_key: 'some-secret-key',
-        region: 'us-west-2'
+        region: 'us-west-2',
+        logger: TestHelpers.logger
       )
     end
     it "executes Transactions::Projects::Create with supplied arguments" do
